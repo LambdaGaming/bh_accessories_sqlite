@@ -64,7 +64,7 @@ BH_ACC.Addons = {
 --  ["ID GOES HERE"] = true,
 
 	-- Are you lazy? Here's every addon added just remove the "--[[" infront and the "]]" at the end --
-        ["150404359"] = true,
+--[[    ["150404359"] = true,
 		["827404607"] = true,
 		["351194925"] = true,
 		["283483231"] = true,
@@ -110,7 +110,7 @@ BH_ACC.Addons = {
 		["705986207"] = true,
 		["327527107"] = true,
 		["129736354"] = true,
-		["2174343063"] = true
+		["2174343063"] = true ]]
 }
 
 

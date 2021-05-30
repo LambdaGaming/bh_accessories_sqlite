@@ -3,17 +3,17 @@ BH_ACC.MySQLOO = {
     --
     -- MySQL Database --
     --
-    Database = "bh_testdb",
+    Database = "db_name",
     
     --
     -- MySQL Username --
     --
-    Username = "root",
+    Username = "db_user",
     
     --
     -- MySQL Password --
     --
-    Password = "",
+    Password = "db_pass",
     
     --
     -- MySQL Host/IP --
