@@ -67,6 +67,7 @@ local player_GetAll = player.GetAll
 local myself = LocalPlayer()
 local function Init()
     myself = LocalPlayer()
+    myself.BH_ACC_delay = CurTime()
 
     net_Start("BH_ACC_RequestSync")
     net_SendToServer()
