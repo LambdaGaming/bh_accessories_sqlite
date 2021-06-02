@@ -49,11 +49,9 @@ function BH_ACC.Query(query, callback, debug)
 		end
 
 		newQuery.onError = onfail
-	else
+	elseif callback then
 		local function onsucc(q, d)
-			if callback then
-				callback(q,d)
-			end 
+			callback(q,d)
 		end
 		newQuery.onSuccess = onsucc
 	end
