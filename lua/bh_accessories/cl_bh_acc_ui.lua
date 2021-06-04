@@ -639,19 +639,19 @@ local dropboxoptions = {
         end,
         doclick = function(ply, data)
             if BH_ACC.GetPlayerBalance(ply) < data.price then
-                self.RunNotification("Notify_No_Money")
+                BH_ACC.RunNotification("Notify_No_Money")
 
                 return
             end
 
             if not BH_ACC.CanBuyAccessory(ply, data.id) then
-                self.RunNotification("Notify_Cant_Buy")
+                BH_ACC.RunNotification("Notify_Cant_Buy")
 
                 return
             end
 
             if not BH_ACC.IsNearVendor(ply) then
-                self.RunNotification("Notify_NotNear_Vendor")
+                BH_ACC.RunNotification("Notify_NotNear_Vendor")
 
                 return
             end
@@ -701,7 +701,7 @@ local dropboxoptions = {
         end,
         doclick = function(ply, data)
             if BH_ACC.GetPlayerBalance(ply) < data.price then
-                self.RunNotification("Notify_Gift_No_Money")
+                BH_ACC.RunNotification("Notify_Gift_No_Money")
 
                 return
             end

@@ -185,6 +185,9 @@ local function EquipAccessory()
     local id = net_ReadUInt(16)
 
     local equipped = ply.bh_acc_equipped
+    
+    if not equipped then return end
+
     local equipped_lookup = ply.bh_acc_equipped_lookup
     local csms = ply.bh_acc_equipped_csms
 
