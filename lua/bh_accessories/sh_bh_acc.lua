@@ -783,6 +783,8 @@ function BH_ACC.EditorDelete(data)
 
 	for k,v in ipairs(player_GetAll()) do
 		local owned = v.bh_acc_owned
+        if not owned then continue end
+
         v.bh_acc_owned_lookup = {}
 		local owned_lookup = v.bh_acc_owned_lookup
 

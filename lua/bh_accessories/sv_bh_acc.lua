@@ -958,6 +958,8 @@ local function BH_ACC_EditorSave(len, ply)
 
 		for k,v in ipairs(player_GetAll()) do
 			local owned = v.bh_acc_owned
+            if not owned then continue end
+            
 			local equipped = v.bh_acc_equipped
 
 			local find = BH_ACC.HasAccessory(v, oldid)
