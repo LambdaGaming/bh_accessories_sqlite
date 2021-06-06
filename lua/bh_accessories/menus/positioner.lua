@@ -1040,11 +1040,11 @@ function BH_ACC:PositionerCreatePlayerModelTab(p)
                 end
 
                 if i == 1 then
-                    self.ModelOffsets[model][bone].scale = Angle(val, old.y, old.r)
+                    self.ModelOffsets[model][bone].scale = Vector(val, old.y, old.r)
                 elseif i == 2 then
-                    self.ModelOffsets[model][bone].scale = Angle(old.p, val, old.r)
+                    self.ModelOffsets[model][bone].scale = Vector(old.p, val, old.r)
                 elseif i == 3 then
-                    self.ModelOffsets[model][bone].scale = Angle(old.p, old.y, val)
+                    self.ModelOffsets[model][bone].scale = Vector(old.p, old.y, val)
                 end
 
                 self.ClearAllPlayerAdjustments()
