@@ -244,6 +244,8 @@ local function UnEquipAccessory()
     if not ply or not IsValid(ply) then return end
 
     local equipped = ply.bh_acc_equipped
+    if not equipped then return end
+
     local equipped_lookup = ply.bh_acc_equipped_lookup
     local csms = ply.bh_acc_equipped_csms
 
@@ -383,6 +385,7 @@ local function BH_ACC_Adjust()
     t.ang = t.ang or angle_zero
     t.scale = t.scale or vector_origin
     
+    ply.bh_acc_adjustments = ply.bh_acc_adjustments or {}
     ply.bh_acc_adjustments[model] = t
 
     ClearPlayerAdjustments(ply)
