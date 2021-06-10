@@ -21,7 +21,7 @@ BH Accessories is way more advanced, optimized and polished than any other acces
 
 Variety of addons for you to choose from. There's currently 47 auto supported addons for you to use! That's over 600 accessories!
 Ability to create and edit categories and sub-categories!
-Full MySQLOO support.
+Full SQLite support.
 In-game positioning menu allowing you to adjust positions of accessories for yourself or globally for specific playermodels
 In-game editor allowing you to easily create/edit/delete accessories.
 Variety of playermodels and accessories, including: Masks, Hats, Backpacks, Helmets, Wings, Ears and more!
@@ -49,12 +49,6 @@ MAIN:
 
 Extract the addon onto your addons folder.
 Open up the config file named bh_acc_config.lua where you can edit whatever you want (Vendor accessories, NPC Spawns, Allowed Ranks, Fonts, Language, Colors and more). Then you can edit the other config file called bh_acc_items_config.lua This file contains all supported addons (47 addons). Allowing you to disable or enable whichever you want.
-
-MYSQL:
-
-Make sure you have mysqloo installed
-Go to bh_acc_sql_config.lua and configure it with your MySQL database details
-Save your files and restart your server
 
 NPCS:
 

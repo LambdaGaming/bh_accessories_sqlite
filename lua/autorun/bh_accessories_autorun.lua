@@ -36,7 +36,6 @@ if SERVER then
 
     AddMenus()
 
-    include("bh_accessories/bh_acc_sql_config.lua")
 	include("bh_accessories/sv_bh_acc.lua")
 	include("bh_accessories/sv_bh_acc_data.lua")
 else

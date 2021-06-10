@@ -175,6 +175,8 @@ end
 function BH_ACC.WritePMDLAdjustmentData()
 	local mdloffsets = BH_ACC.AddedModelOffsets
 
+	if !mdloffsets then return end
+
 	local amt = #mdloffsets
 
 	net_WriteUInt(amt, 16)

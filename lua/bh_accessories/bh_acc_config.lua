@@ -10,7 +10,7 @@
 
 -- Chat Tag --
     BH_ACC.ChatTag = "[BH Accessories]"
-    BH_ACC.ChatTagMySQL = "[BH Accessories MySQL]"
+    BH_ACC.ChatTagMySQL = "[BH Accessories SQL]"
     BH_ACC.ChatTagColors = {
         ["error"] = Color(255,0,0),
         ["ok"] = Color(64, 194, 230),

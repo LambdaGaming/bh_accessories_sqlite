@@ -7,6 +7,7 @@ local tobool = tobool
 local player_GetAll = player.GetAll
 local random = math.random
 local table_remove = table.remove
+local Query = sql.Query
 
 local net_Start = net.Start
 local net_Receive = net.Receive
@@ -396,11 +397,9 @@ local function ReadThreeFloatsAndClamp(cl)
 	return math_Clamp(math_Round(net_ReadFloat() or 0, 2), -cl, cl), math_Clamp(math_Round(net_ReadFloat() or 0, 2), -cl, cl), math_Clamp(math_Round(net_ReadFloat() or 0, 2), -cl, cl)
 end
 
-local Query = BH_ACC.Query
 local DBEscape = BH_ACC.DBEscape
 
 hook.Add("BH_ACC_DBConnected", "BH_ACC_GetFunctions", function()
-	Query = BH_ACC.Query
 	DBEscape = BH_ACC.DBEscape
 end)
 
@@ -933,25 +932,23 @@ local function BH_ACC_EditorSave(len, ply)
 
         Query("INSERT INTO `bh_accessories_editor` (`name`, `disabled`, `model`, `category`) VALUES (" .. esc_old .. ", 1, " .. DBEscape(olddata.model) .. ", " .. DBEscape(olddata.category) .. ") ON DUPLICATE KEY UPDATE `disabled` = 1" )
 
-		Query("SELECT `steamid` FROM `bh_accessories_owned` WHERE `name` = " .. esc_old, function(q, data)
-			for k,v in ipairs(data) do
-				local steamid = v.steamid
-				local esc = DBEscape(steamid)
+		Query("SELECT `steamid` FROM `bh_accessories_owned` WHERE `name` = " .. esc_old)
+		for k,v in ipairs(data) do
+			local steamid = v.steamid
+			local esc = DBEscape(steamid)
 
-				Query("DELETE FROM `bh_accessories_owned` WHERE `steamid` = " .. esc .. " AND `name` = " .. esc_old)
-				Query("INSERT INTO `bh_accessories_owned` (`steamid`, `name`) VALUES (" .. esc .. ", " .. esc_new .. ") ON DUPLICATE KEY UPDATE `name` = `name`")
-			end
-		end)
+			Query("DELETE FROM `bh_accessories_owned` WHERE `steamid` = " .. esc .. " AND `name` = " .. esc_old)
+			Query("INSERT INTO `bh_accessories_owned` (`steamid`, `name`) VALUES (" .. esc .. ", " .. esc_new .. ") ON DUPLICATE KEY UPDATE `name` = `name`")
+		end
 
-		Query("SELECT `steamid` FROM `bh_accessories_equipped` WHERE `name` = " .. esc_old, function(q, data)
-			for k,v in ipairs(data) do
-				local steamid = v.steamid
-				local esc = DBEscape(steamid)
+		Query("SELECT `steamid` FROM `bh_accessories_equipped` WHERE `name` = " .. esc_old)
+		for k,v in ipairs(data) do
+			local steamid = v.steamid
+			local esc = DBEscape(steamid)
 
-				Query("DELETE FROM `bh_accessories_equipped` WHERE `steamid` = " .. esc .. " AND `name` = " .. esc_old)
-				Query("INSERT INTO `bh_accessories_equipped` (`steamid`, `name`) VALUES (" .. esc .. ", " .. esc_new .. ") ON DUPLICATE KEY UPDATE `name` = `name`")
-			end
-		end)
+			Query("DELETE FROM `bh_accessories_equipped` WHERE `steamid` = " .. esc .. " AND `name` = " .. esc_old)
+			Query("INSERT INTO `bh_accessories_equipped` (`steamid`, `name`) VALUES (" .. esc .. ", " .. esc_new .. ") ON DUPLICATE KEY UPDATE `name` = `name`")
+		end
 
 		BH_ACC.EditorRemoveAndAddNew(oldid, newdata)
         local newid = newdata.id
