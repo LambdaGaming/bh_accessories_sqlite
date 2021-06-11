@@ -117,6 +117,16 @@ BH_ACC.MDLBoneCache = BH_ACC.MDLBoneCache or {}
 function BH_ACC.LookupBone(ent, bone)
     local mdl = GetModel(ent)
 
+	local names = {
+		["HEAD"] = "ValveBiped.Bip01_Head1",
+		["SPINE"] = "ValveBiped.Bip01_Spine2",
+		["FOOT"] = "ValveBiped.Bip01_R_Foot",
+	}
+
+	if names[bone] then
+		bone = names[bone]
+	end
+
     local mc = BH_ACC.MDLBoneCache[mdl]
     if not mc then
         mc = {}
