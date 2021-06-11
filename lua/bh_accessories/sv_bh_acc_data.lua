@@ -24,9 +24,9 @@ function BH_ACC.DBEscape(q, quotes)
     local qs = tostring(q)
 
 	if quotes then
-		return sql.SQLStr( qs )
-	else
 		return sql.SQLStr( qs, true )
+	else
+		return sql.SQLStr( qs )
 	end
 end
 local DBEscape = BH_ACC.DBEscape
@@ -35,78 +35,78 @@ local function Connect_To_DB()
 	hook.Run("BH_ACC_DBConnected")
 	
 	Query([[
-		CREATE TABLE IF NOT EXISTS `bh_accessories_owned` (
-			`steamid` VARCHAR(32) NOT NULL,
-			`name` VARCHAR(255) NOT NULL,
-			PRIMARY KEY(`steamid`, `name`)
+		CREATE TABLE IF NOT EXISTS bh_accessories_owned (
+			steamid VARCHAR(32) NOT NULL,
+			name VARCHAR(255) NOT NULL,
+			PRIMARY KEY(steamid, name)
 		)
 	]])
 
 	Query([[
-		CREATE TABLE IF NOT EXISTS `bh_accessories_equipped` (
-			`steamid` VARCHAR(32) NOT NULL,
-			`name` VARCHAR(255) NOT NULL,
-			PRIMARY KEY(`steamid`, `name`)
+		CREATE TABLE IF NOT EXISTS bh_accessories_equipped (
+			steamid VARCHAR(32) NOT NULL,
+			name VARCHAR(255) NOT NULL,
+			PRIMARY KEY(steamid, name)
 		)
 	]])
 
 	Query([[
-		CREATE TABLE IF NOT EXISTS `bh_accessories_adjusted` (
-			`steamid` VARCHAR(32) NOT NULL,
-			`model` VARCHAR(255) NOT NULL,
-			`vx` FLOAT NOT NULL,
-			`vy` FLOAT NOT NULL,
-			`vz` FLOAT NOT NULL,
-			`ap` FLOAT NOT NULL,
-			`ay` FLOAT NOT NULL,
-			`ar` FLOAT NOT NULL,
-			`sx` FLOAT NOT NULL,
-			`sy` FLOAT NOT NULL,
-			`sz` FLOAT NOT NULL,
-			PRIMARY KEY(`steamid`, `model`)
+		CREATE TABLE IF NOT EXISTS bh_accessories_adjusted (
+			steamid VARCHAR(32) NOT NULL,
+			model VARCHAR(255) NOT NULL,
+			vx FLOAT NOT NULL,
+			vy FLOAT NOT NULL,
+			vz FLOAT NOT NULL,
+			ap FLOAT NOT NULL,
+			ay FLOAT NOT NULL,
+			ar FLOAT NOT NULL,
+			sx FLOAT NOT NULL,
+			sy FLOAT NOT NULL,
+			sz FLOAT NOT NULL,
+			PRIMARY KEY(steamid, model)
 		)
 	]])
 
 	Query([[
-		CREATE TABLE IF NOT EXISTS `bh_accessories_pmdl_adjusted` (
-			`model` VARCHAR(255) NOT NULL,
-			`bone` VARCHAR(255) NOT NULL,
-			`vx` FLOAT NOT NULL,
-			`vy` FLOAT NOT NULL,
-			`vz` FLOAT NOT NULL,
-			`ap` FLOAT NOT NULL,
-			`ay` FLOAT NOT NULL,
-			`ar` FLOAT NOT NULL,
-			`sx` FLOAT NOT NULL,
-			`sy` FLOAT NOT NULL,
-			`sz` FLOAT NOT NULL,
-			PRIMARY KEY(`model`, `bone`)
+		CREATE TABLE IF NOT EXISTS bh_accessories_pmdl_adjusted (
+			model VARCHAR(255) NOT NULL,
+			bone VARCHAR(255) NOT NULL,
+			vx FLOAT NOT NULL,
+			vy FLOAT NOT NULL,
+			vz FLOAT NOT NULL,
+			ap FLOAT NOT NULL,
+			ay FLOAT NOT NULL,
+			ar FLOAT NOT NULL,
+			sx FLOAT NOT NULL,
+			sy FLOAT NOT NULL,
+			sz FLOAT NOT NULL,
+			PRIMARY KEY(model, bone)
 		)
 	]])
 
 	Query([[
-		CREATE TABLE IF NOT EXISTS `bh_accessories_editor` (
-			`name` VARCHAR(255) UNIQUE NOT NULL,
-			`disabled` BOOL,
-			`description` TEXT,
-			`model` TINYTEXT NOT NULL,
-			`price` INT UNSIGNED,
-			`bone` TEXT,
-			`material` TINYTEXT,
-			`skin` TINYINT UNSIGNED,
-			`r` FLOAT, `g` FLOAT, `b` FLOAT,
-			`user` TEXT,
-			`IsPlayerModel` BOOL,
-			`vx` FLOAT, `vy` FLOAT, `vz` FLOAT,
-			`ap` FLOAT, `ay` FLOAT, `ar` FLOAT,
-			`sx` FLOAT, `sy` FLOAT, `sz` FLOAT,
-			`uivx` FLOAT, `uivy` FLOAT, `uivz` FLOAT,
-			`uiap` FLOAT, `uiay` FLOAT, `uiar` FLOAT,
-			`ui_FOV` FLOAT,
-			`ui_Simple` BOOL,
-			`category` TINYTEXT NOT NULL,
-			`mini_category` TINYTEXT,
-			PRIMARY KEY(`name`)
+		CREATE TABLE IF NOT EXISTS bh_accessories_editor (
+			name VARCHAR(255) UNIQUE NOT NULL,
+			disabled BOOL,
+			description TEXT,
+			model TINYTEXT NOT NULL,
+			price INT UNSIGNED,
+			bone TEXT,
+			material TINYTEXT,
+			skin TINYINT UNSIGNED,
+			r FLOAT, g FLOAT, b FLOAT,
+			user TEXT,
+			IsPlayerModel BOOL,
+			vx FLOAT, vy FLOAT, vz FLOAT,
+			ap FLOAT, ay FLOAT, ar FLOAT,
+			sx FLOAT, sy FLOAT, sz FLOAT,
+			uivx FLOAT, uivy FLOAT, uivz FLOAT,
+			uiap FLOAT, uiay FLOAT, uiar FLOAT,
+			ui_FOV FLOAT,
+			ui_Simple BOOL,
+			category TINYTEXT NOT NULL,
+			mini_category TINYTEXT,
+			PRIMARY KEY(name)
 		)
 	]])
 
@@ -153,7 +153,7 @@ local function Connect_To_DB()
 				end
 			end
 		end
-		local data = Query("SELECT * FROM `bh_accessories_pmdl_adjusted`")
+		local data = Query("SELECT * FROM bh_accessories_pmdl_adjusted")
 		if data then
 			pmdlquery( data )
 		end
@@ -218,21 +218,21 @@ local function Connect_To_DB()
 			end
 		end
 		local cats = BH_ACC.Categories
-		local text = "`category` = " .. DBEscape(cats[1].name)
+		local text = "category = " .. DBEscape(cats[1].name)
 		for i = 2, #cats do
-			text = text .. " OR `category` = " .. DBEscape(cats[i].name)
+			text = text .. " OR category = " .. DBEscape(cats[i].name)
 		end
 		
 		text = text .. " AND "
 
 		local minicats = BH_ACC.MiniCategories
-		text = text .. "ISNULL(`mini_category`) OR "
-		text = text .. "`mini_category` = " .. DBEscape(minicats[1].name)
+		text = text .. "mini_category IS NULL OR "
+		text = text .. "mini_category = " .. DBEscape(minicats[1].name)
 		for i = 2, #minicats do
-			text = text .. " OR `mini_category` = " .. DBEscape(minicats[i].name)
+			text = text .. " OR mini_category = " .. DBEscape(minicats[i].name)
 		end
 
-		local data = Query("SELECT * FROM `bh_accessories_editor` WHERE " .. text)
+		local data = Query("SELECT * FROM bh_accessories_editor WHERE " .. text)
 		if data then
 			query( data )
 		end
@@ -283,7 +283,7 @@ local function LoadPlayerAccessories(ply)
 			owned_lookup[id] = reali
 		end
 	end
-	local data1 = Query("SELECT `name` FROM `bh_accessories_owned` WHERE `steamid` = " .. esc_sid)
+	local data1 = Query("SELECT name FROM bh_accessories_owned WHERE steamid = " .. esc_sid)
 	if data1 then
 		query1( data1 )
 	end
@@ -305,7 +305,7 @@ local function LoadPlayerAccessories(ply)
 			equipped_lookup[id] = reali
 		end
 	end
-	local data2 = Query("SELECT `name` FROM `bh_accessories_equipped` WHERE `steamid` = " .. esc_sid)
+	local data2 = Query("SELECT name FROM bh_accessories_equipped WHERE steamid = " .. esc_sid)
 	if data2 then
 		query2( data2 )
 	end
@@ -322,7 +322,7 @@ local function LoadPlayerAccessories(ply)
 				adjustments_lookup[k] = v.model
 			end
 		end
-		local data3 = Query("SELECT `model`, `vx`, `vy`, `vz`, `ap`, `ay`, `ar`, `sx`, `sy`, `sz` FROM `bh_accessories_adjusted` WHERE `steamid` = " .. esc_sid)
+		local data3 = Query("SELECT model, vx, vy, vz, ap, ay, ar, sx, sy, sz FROM bh_accessories_adjusted WHERE steamid = " .. esc_sid)
 		if data3 then
 			query3( data3 )
 		end
@@ -331,19 +331,19 @@ end
 hook.Add("PlayerAuthed", "BH_ACC_LoadAccessories", LoadPlayerAccessories)
 
 function BH_ACC.SavePlayerAccessory(ply, id)
-	Query("INSERT INTO `bh_accessories_owned` (`steamid`, `name`) VALUES (" .. DBEscape(SteamID64(ply)) .. ", " .. DBEscape(GetItemData(id).name) .. ")" )
+	Query("INSERT OR REPLACE INTO bh_accessories_owned(steamid, name) VALUES (" .. DBEscape(SteamID64(ply)) .. ", " .. DBEscape(GetItemData(id).name) .. ")" )
 end
 
 function BH_ACC.DeletePlayerAccessory(ply, id)
-	Query("DELETE FROM `bh_accessories_owned` WHERE `steamid` = " .. DBEscape(SteamID64(ply)) .. " AND `name` = " .. DBEscape(GetItemData(id).name))
+	Query("DELETE FROM bh_accessories_owned WHERE steamid = " .. DBEscape(SteamID64(ply)) .. " AND name = " .. DBEscape(GetItemData(id).name))
 end
 
 function BH_ACC.SaveEquippedAccessory(ply, id)
-	Query("INSERT INTO `bh_accessories_equipped` (`steamid`, `name`) VALUES (" .. DBEscape(SteamID64(ply)) .. ", " .. DBEscape(GetItemData(id).name) .. ")" )
+	Query("INSERT OR REPLACE INTO bh_accessories_equipped(steamid, name) VALUES (" .. DBEscape(SteamID64(ply)) .. ", " .. DBEscape(GetItemData(id).name) .. ")" )
 end
 
 function BH_ACC.DeleteEquippedAccessory(ply, id)
-	Query("DELETE FROM `bh_accessories_equipped` WHERE `steamid` = " .. DBEscape(SteamID64(ply)) .. " AND `name` = " .. DBEscape(GetItemData(id).name))
+	Query("DELETE FROM bh_accessories_equipped WHERE steamid = " .. DBEscape(SteamID64(ply)) .. " AND name = " .. DBEscape(GetItemData(id).name))
 end
 
 local IsValid = IsValid

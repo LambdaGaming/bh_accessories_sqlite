@@ -433,7 +433,7 @@ local function BH_ACC_Adjust(len, ply)
 		adj_lookup[#adj_lookup + 1] = model
 
 		if BH_ACC.PositionerSaveToDB then
-			Query("INSERT INTO `bh_accessories_adjusted` (`steamid`, `model`, `vx`, `vy`, `vz`, `ap`, `ay`, `ar`, `sx`, `sy`, `sz`) VALUES (" .. DBEscape(ply:SteamID64()) .. ", " .. DBEscape(model) .. ", " .. DBEscape(adjpx) .. ", " .. DBEscape(adjpy) .. ", " .. DBEscape(adjpz)  .. ", " .. DBEscape(adjap) .. ", " .. DBEscape(adjay) .. ", " .. DBEscape(adjar)  .. ", " .. DBEscape(adjsx) .. ", " .. DBEscape(adjsy) .. ", " .. DBEscape(adjsz) .. ")")
+			Query("INSERT OR REPLACE INTO bh_accessories_adjusted(steamid, model, vx, vy, vz, ap, ay, ar, sx, sy, sz) VALUES (" .. DBEscape(ply:SteamID64()) .. ", " .. DBEscape(model) .. ", " .. DBEscape(adjpx) .. ", " .. DBEscape(adjpy) .. ", " .. DBEscape(adjpz)  .. ", " .. DBEscape(adjap) .. ", " .. DBEscape(adjay) .. ", " .. DBEscape(adjar)  .. ", " .. DBEscape(adjsx) .. ", " .. DBEscape(adjsy) .. ", " .. DBEscape(adjsz) .. ")")
 		end
 	else
 		adjustments[model] = {
@@ -443,7 +443,7 @@ local function BH_ACC_Adjust(len, ply)
 		}
 
 		if BH_ACC.PositionerSaveToDB then
-			Query("UPDATE `bh_accessories_adjusted` SET `vx` = " .. DBEscape(adjpx) .. ", `vy` = " .. DBEscape(adjpy) .. ", `vz` = " .. DBEscape(adjpz) .. ", `ap` = " .. DBEscape(adjap) .. ", `ay` = " .. DBEscape(adjay) ..", `ar` = " .. DBEscape(adjar) .. ", `sx` = " .. DBEscape(adjsx) .. ", `sy` = " .. DBEscape(adjsy) .. ", `sz` = " .. DBEscape(adjsz) .. " WHERE `steamid` = " .. DBEscape(ply:SteamID64()) .. " AND `model` = " .. DBEscape(model)  )
+			Query("UPDATE bh_accessories_adjusted SET vx = " .. DBEscape(adjpx) .. ", vy = " .. DBEscape(adjpy) .. ", vz = " .. DBEscape(adjpz) .. ", ap = " .. DBEscape(adjap) .. ", ay = " .. DBEscape(adjay) ..", ar = " .. DBEscape(adjar) .. ", sx = " .. DBEscape(adjsx) .. ", sy = " .. DBEscape(adjsy) .. ", sz = " .. DBEscape(adjsz) .. " WHERE steamid = " .. DBEscape(ply:SteamID64()) .. " AND model = " .. DBEscape(model)  )
 		end
 	end
 
@@ -533,7 +533,7 @@ local function BH_ACC_Adjust_PModel(len, ply)
 		offkey = 1
 	end
 
-	Query("INSERT INTO `bh_accessories_pmdl_adjusted` (`model`, `bone`, `vx`, `vy`, `vz`, `ap`, `ay`, `ar`, `sx`, `sy`, `sz`) VALUES (" .. DBEscape(model) .. ", " .. DBEscape(bone) .. ", " .. DBEscape(adjpx) .. ", " .. DBEscape(adjpy) .. ", " .. DBEscape(adjpz)  .. ", " .. DBEscape(adjap) .. ", " .. DBEscape(adjay) .. ", " .. DBEscape(adjar)  .. ", " .. DBEscape(adjsx) .. ", " .. DBEscape(adjsy) .. ", " .. DBEscape(adjsz) .. ") ON DUPLICATE KEY UPDATE `vx` = " .. DBEscape(adjpx) .. ", `vy` = " .. DBEscape(adjpy) .. ", `vz` = " .. DBEscape(adjpz) .. ", `ap` = " .. DBEscape(adjap) .. ", `ay` = " .. DBEscape(adjay) ..", `ar` = " .. DBEscape(adjar) .. ", `sx` = " .. DBEscape(adjsx) .. ", `sy` = " .. DBEscape(adjsy) .. ", `sz` = " .. DBEscape(adjsz))
+	Query("INSERT OR REPLACE INTO bh_accessories_pmdl_adjusted(model, bone, vx, vy, vz, ap, ay, ar, sx, sy, sz) VALUES (" .. DBEscape(model) .. ", " .. DBEscape(bone) .. ", " .. DBEscape(adjpx) .. ", " .. DBEscape(adjpy) .. ", " .. DBEscape(adjpz)  .. ", " .. DBEscape(adjap) .. ", " .. DBEscape(adjay) .. ", " .. DBEscape(adjar)  .. ", " .. DBEscape(adjsx) .. ", " .. DBEscape(adjsy) .. ", " .. DBEscape(adjsz) .. ")")
 	
 	local send = 0
 	local thing = mdloffsets[mdlkey].offsets[offkey]
@@ -719,29 +719,29 @@ local function BH_ACC_EditorCreate(len, ply)
 	end
 
 	Query([[
-		INSERT INTO `bh_accessories_editor` (
-			`name`,
-			`disabled`,
-			`description`,
-			`model`,
-			`price`,
-			`bone`,
-			`material`,
-			`skin`,
-			`user`,
-			`IsPlayerModel`,
-			`vx`,`vy`,`vz`,
-			`ap`,`ay`,`ar`,
-			`sx`,`sy`,`sz`,
-			`uivx`,`uivy`,`uivz`, 
-			`uiap`,`uiay`,`uiar`,
-			`ui_FOV`,
-			`ui_Simple`,
-			`category`,
-			`mini_category`
-		) VALUES (]].. querytext .. ") ON DUPLICATE KEY UPDATE `name` = " .. t[1] .. ", `disabled` = 0, `description` = " .. t[2] .. ", `model` = " .. t[3] .. ", `price` = " .. t[4] .. ", `bone` = " .. t[5] .. ", `material` = " .. t[6] .. ", `skin` = " .. t[7] .. ", `user` = " .. t[8] .. ", `IsPlayerModel` = " .. t[9] .. ", `vx` = " .. t[10] .. ", `vy` = " .. t[11] .. ", `vz` = " .. t[12] .. ", `ap` = " .. t[13] .. ", `ay` = " .. t[14] .. ", `ar` = " .. t[15] .. ", `sx` = " .. t[16] .. ", `sy` = " .. t[17] .. ", `sz` = " .. t[18] .. ", `uivx` = " .. t[19] .. ", `uivy` = " .. t[20] .. ", `uivz` = " .. t[21] .. ", `uiap` = " .. t[22] .. ", `uiay` = " .. t[23] .. ", `uiar` = " .. t[24] .. ", `ui_FOV` = " .. t[25] .. ", `ui_Simple` = " .. t[26] .. ", `category` = " .. t[27] .. ", `mini_category` = " .. t[28]
+		INSERT OR REPLACE INTO bh_accessories_editor(
+			name,
+			disabled,
+			description,
+			model,
+			price,
+			bone,
+			material,
+			skin,
+			user,
+			IsPlayerModel,
+			vx,vy,vz,
+			ap,ay,ar,
+			sx,sy,sz,
+			uivx,uivy,uivz, 
+			uiap,uiay,uiar,
+			ui_FOV,
+			ui_Simple,
+			category,
+			mini_category
+		) VALUES (]].. querytext .. ")"
 	)
-
+	
 	BH_ACC.EditorCreateUpdateItemData(newdata)
 
 	net_Start("BH_ACC_EditorCreate")
@@ -930,24 +930,24 @@ local function BH_ACC_EditorSave(len, ply)
 		local esc_old = DBEscape(oldname)
 		local esc_new = DBEscape(newname)
 
-        Query("INSERT INTO `bh_accessories_editor` (`name`, `disabled`, `model`, `category`) VALUES (" .. esc_old .. ", 1, " .. DBEscape(olddata.model) .. ", " .. DBEscape(olddata.category) .. ") ON DUPLICATE KEY UPDATE `disabled` = 1" )
+        Query("INSERT OR REPLACE INTO bh_accessories_editor (name, disabled, model, category) VALUES (" .. esc_old .. ", 1, " .. DBEscape(olddata.model) .. ", " .. DBEscape(olddata.category) .. ")" )
 
-		Query("SELECT `steamid` FROM `bh_accessories_owned` WHERE `name` = " .. esc_old)
+		Query("SELECT steamid FROM bh_accessories_owned WHERE name = " .. esc_old)
 		for k,v in ipairs(data) do
 			local steamid = v.steamid
 			local esc = DBEscape(steamid)
 
-			Query("DELETE FROM `bh_accessories_owned` WHERE `steamid` = " .. esc .. " AND `name` = " .. esc_old)
-			Query("INSERT INTO `bh_accessories_owned` (`steamid`, `name`) VALUES (" .. esc .. ", " .. esc_new .. ") ON DUPLICATE KEY UPDATE `name` = `name`")
+			Query("DELETE FROM bh_accessories_owned WHERE steamid = " .. esc .. " AND name = " .. esc_old)
+			Query("INSERT OR REPLACE INTO bh_accessories_owned (steamid, name) VALUES (" .. esc .. ", " .. esc_new .. ")")
 		end
 
-		Query("SELECT `steamid` FROM `bh_accessories_equipped` WHERE `name` = " .. esc_old)
+		Query("SELECT steamid FROM bh_accessories_equipped WHERE name = " .. esc_old)
 		for k,v in ipairs(data) do
 			local steamid = v.steamid
 			local esc = DBEscape(steamid)
 
-			Query("DELETE FROM `bh_accessories_equipped` WHERE `steamid` = " .. esc .. " AND `name` = " .. esc_old)
-			Query("INSERT INTO `bh_accessories_equipped` (`steamid`, `name`) VALUES (" .. esc .. ", " .. esc_new .. ") ON DUPLICATE KEY UPDATE `name` = `name`")
+			Query("DELETE FROM bh_accessories_equipped WHERE steamid = " .. esc .. " AND name = " .. esc_old)
+			Query("INSERT OR REPLACE INTO bh_accessories_equipped (steamid, name) VALUES (" .. esc .. ", " .. esc_new .. ")")
 		end
 
 		BH_ACC.EditorRemoveAndAddNew(oldid, newdata)
@@ -1080,27 +1080,27 @@ local function BH_ACC_EditorSave(len, ply)
 	end
 
 	Query([[
-		INSERT INTO `bh_accessories_editor` (
-			`name`,
-			`disabled`,
-			`description`,
-			`model`,
-			`price`,
-			`bone`,
-			`material`,
-			`skin`,
-			`user`,
-			`IsPlayerModel`,
-			`vx`,`vy`,`vz`,
-			`ap`,`ay`,`ar`,
-			`sx`,`sy`,`sz`,
-			`uivx`,`uivy`,`uivz`, 
-			`uiap`,`uiay`,`uiar`,
-			`ui_FOV`,
-			`ui_Simple`,
-			`category`,
-			`mini_category`
-		) VALUES (]].. querytext .. ") ON DUPLICATE KEY UPDATE `name` = " .. t[1] .. ", `disabled` = 0, `description` = " .. t[2] .. ", `model` = " .. t[3] .. ", `price` = " .. t[4] .. ", `bone` = " .. t[5] .. ", `material` = " .. t[6] .. ", `skin` = " .. t[7] .. ", `user` = " .. t[8] .. ", `IsPlayerModel` = " .. t[9] .. ", `vx` = " .. t[10] .. ", `vy` = " .. t[11] .. ", `vz` = " .. t[12] .. ", `ap` = " .. t[13] .. ", `ay` = " .. t[14] .. ", `ar` = " .. t[15] .. ", `sx` = " .. t[16] .. ", `sy` = " .. t[17] .. ", `sz` = " .. t[18] .. ", `uivx` = " .. t[19] .. ", `uivy` = " .. t[20] .. ", `uivz` = " .. t[21] .. ", `uiap` = " .. t[22] .. ", `uiay` = " .. t[23] .. ", `uiar` = " .. t[24] .. ", `ui_FOV` = " .. t[25] .. ", `ui_Simple` = " .. t[26] .. ", `category` = " .. t[27] .. ", `mini_category` = " .. t[28]
+		INSERT OR REPLACE INTO bh_accessories_editor (
+			name,
+			disabled,
+			description,
+			model,
+			price,
+			bone,
+			material,
+			skin,
+			user,
+			IsPlayerModel,
+			vx,vy,vz,
+			ap,ay,ar,
+			sx,sy,sz,
+			uivx,uivy,uivz, 
+			uiap,uiay,uiar,
+			ui_FOV,
+			ui_Simple,
+			category,
+			mini_category
+		) VALUES (]].. querytext .. ")"
 	)
 
 	net_Start("BH_ACC_EditorSave")
@@ -1185,32 +1185,32 @@ local function BH_ACC_EditorDelete(len, ply)
 	end
 
 	Query([[
-		INSERT INTO `bh_accessories_editor` (
-			`name`,
-			`disabled`,
-			`description`,
-			`model`,
-			`price`,
-			`bone`,
-			`material`,
-			`skin`,
-			`user`,
-			`IsPlayerModel`,
-			`vx`,`vy`,`vz`,
-			`ap`,`ay`,`ar`,
-			`sx`,`sy`,`sz`,
-			`uivx`,`uivy`,`uivz`, 
-			`uiap`,`uiay`,`uiar`,
-			`ui_FOV`,
-			`ui_Simple`,
-			`category`,
-			`mini_category`
-		) VALUES (]].. querytext .. ") ON DUPLICATE KEY UPDATE `name` = " .. t[1] .. ", `disabled` = 1, `description` = " .. t[2] .. ", `model` = " .. t[3] .. ", `price` = " .. t[4] .. ", `bone` = " .. t[5] .. ", `material` = " .. t[6] .. ", `skin` = " .. t[7] .. ", `user` = " .. t[8] .. ", `IsPlayerModel` = " .. t[9] .. ", `vx` = " .. t[10] .. ", `vy` = " .. t[11] .. ", `vz` = " .. t[12] .. ", `ap` = " .. t[13] .. ", `ay` = " .. t[14] .. ", `ar` = " .. t[15] .. ", `sx` = " .. t[16] .. ", `sy` = " .. t[17] .. ", `sz` = " .. t[18] .. ", `uivx` = " .. t[19] .. ", `uivy` = " .. t[20] .. ", `uivz` = " .. t[21] .. ", `uiap` = " .. t[22] .. ", `uiay` = " .. t[23] .. ", `uiar` = " .. t[24] .. ", `ui_FOV` = " .. t[25] .. ", `ui_Simple` = " .. t[26] .. ", `category` = " .. t[27] .. ", `mini_category` = " .. t[28]
+		INSERT OR REPLACE INTO bh_accessories_editor (
+			name,
+			disabled,
+			description,
+			model,
+			price,
+			bone,
+			material,
+			skin,
+			user,
+			IsPlayerModel,
+			vx,vy,vz,
+			ap,ay,ar,
+			sx,sy,sz,
+			uivx,uivy,uivz, 
+			uiap,uiay,uiar,
+			ui_FOV,
+			ui_Simple,
+			category,
+			mini_category
+		) VALUES (]].. querytext .. ")"
 	)
 
 	local esc_name = DBEscape(data.name)
-	Query("DELETE FROM `bh_accessories_owned` WHERE `name` = " .. esc_name)
-	Query("DELETE FROM `bh_accessories_equipped` WHERE `name` = " .. esc_name)
+	Query("DELETE FROM bh_accessories_owned WHERE name = " .. esc_name)
+	Query("DELETE FROM bh_accessories_equipped WHERE name = " .. esc_name)
 
 	BH_ACC.EditorDelete(data)
 
