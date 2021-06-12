@@ -3,6 +3,7 @@ local ipairs = ipairs
 local IsValid = IsValid
 local istable = istable
 local tobool = tobool
+local tonumber = tonumber
 
 local player_GetAll = player.GetAll
 local random = math.random
@@ -137,7 +138,7 @@ local function BuyItem(len, ply)
 
 	local data = GetItemData(id)
 
-	if not data or data.disabled or BH_ACC.HasAccessory(ply, id) or BH_ACC.GetPlayerBalance(ply) < data.price or not BH_ACC.CanUseSystem(ply) or not BH_ACC.CanBuyAccessory(ply, id) or not BH_ACC.IsNearVendor(ply) or not BH_ACC.IsEnabledLeftCategory("APPEARANCE") then return end
+	if not data or data.disabled or BH_ACC.HasAccessory(ply, id) or BH_ACC.GetPlayerBalance(ply) < tonumber( data.price ) or not BH_ACC.CanUseSystem(ply) or not BH_ACC.CanBuyAccessory(ply, id) or not BH_ACC.IsNearVendor(ply) or not BH_ACC.IsEnabledLeftCategory("APPEARANCE") then return end
 
 	BH_ACC.SetPlayerBalance(ply, BH_ACC.GetPlayerBalance(ply) - BH_ACC.GetBuyPrice(ply, data.price))
 
@@ -217,7 +218,7 @@ local function SellItem(len, ply)
 	net_Start("BH_ACC_UnEquipItem")
 	WritePlayer(ply)
 	net_WriteUInt(id, 16)
-	net_SendOmit(ply)
+	net_Broadcast()
 end
 net_Receive("BH_ACC_SellItem", SellItem)
 
