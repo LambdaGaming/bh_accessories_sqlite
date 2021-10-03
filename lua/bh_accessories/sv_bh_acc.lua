@@ -114,9 +114,6 @@ local function RequestSyncPlayer(len, ply)
 	local target = BH_ACC.ReadPlayer()
 
 	if not target or not IsValid(target) or target == ply or not target.bh_acc_equipped then return end
-
-	if ply.BH_ACC_SyncDelay and ply.BH_ACC_SyncDelay > CurTime() then return end
-	ply.BH_ACC_SyncDelay = CurTime() + 2
 	
 	if ply.BH_ACC_SyncRequests and ply.BH_ACC_SyncRequests[target] then return end
 	ply.BH_ACC_SyncRequests = ply.BH_ACC_SyncRequests or {[target] = true}
